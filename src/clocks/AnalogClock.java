@@ -118,12 +118,13 @@ class ClockPanel extends JPanel {
 		//数字を描画
 		for(int i = 1; i <= 12; i++) {
 			//「現在時」の文字盤だけ大太文字にする
-			if(i != hour % 12 && hour % 12 != 0) {
-				g2d.setFont(new Font(clockFont, Font.PLAIN, 15));
-				g2d.setColor(Color.WHITE);
-			} else {
+			if(i == hour || (i == 12 && hour == 0)) {
 				g2d.setFont(new Font(clockFont, Font.BOLD, 18));
 				g2d.setColor(new Color(180, 233, 0));
+				
+			} else {
+				g2d.setFont(new Font(clockFont, Font.PLAIN, 15));
+				g2d.setColor(Color.WHITE);
 			}
 			//12分割とおまじない
 			double angle = Math.toRadians(i * 30 - 90);
