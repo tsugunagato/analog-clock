@@ -75,7 +75,7 @@ class ClockPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		//中心座標と針の長さの限界値を決める
+		//中心座標と針の長さの最大値を決める
 		int centerX = getWidth() / 2;
 		int centerY = getHeight() / 2;
 		int radius = Math.min(centerX, centerY);
@@ -93,16 +93,18 @@ class ClockPanel extends JPanel {
 	
 	//針の描画
 	private void drawHand(Graphics g, int centerX, int centerY, double length, double angle, Color color, int str) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		
 		int x = centerX + (int) (length * Math.sin(Math.toRadians(angle)));
 		int y = centerY - (int) (length * Math.cos(Math.toRadians(angle)));
 		
-		Graphics2D g2d = (Graphics2D) g.create();
 		// アンチエイリアス処理
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		g2d.setColor(color);
 		//針の先を丸める
 		g2d.setStroke(new BasicStroke(str, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+		//針の色を設定
+		g2d.setColor(color);
+		
 		g2d.drawLine(centerX, centerY, x, y);
 		g2d.dispose();
 	}
@@ -121,15 +123,14 @@ class ClockPanel extends JPanel {
 			if(i == hour || (i == 12 && hour == 0)) {
 				g2d.setFont(new Font(clockFont, Font.BOLD, 18));
 				g2d.setColor(new Color(180, 233, 0));
-				
 			} else {
 				g2d.setFont(new Font(clockFont, Font.PLAIN, 15));
 				g2d.setColor(Color.WHITE);
 			}
-			//12分割とおまじない
-			double angle = Math.toRadians(i * 30 - 90);
-			int x = (int) (centerX + (radius - 20) * Math.cos(angle)) - 3;
-			int y = (int) (centerY + (radius - 20) * Math.sin(angle)) + 6;
+			//12分割
+			double angle = Math.toRadians(i * 30);
+			int x = (int) (centerX + radius * 0.85 * Math.sin(angle)) - 3;
+			int y = (int) (centerY - radius * 0.85 * Math.cos(angle)) + 6;
 			g2d.drawString(Integer.toString(i), x, y);
 		}
 	}
