@@ -120,7 +120,7 @@ class ClockPanel extends JPanel {
 		//数字を描画
 		for(int i = 1; i <= 12; i++) {
 			//「現在時」の文字盤だけ大太文字にする
-			if(i == hour || (i == 12 && hour == 0)) {
+			if(hour % 12 == i || (i == 12 && hour == 0)) {
 				g2d.setFont(new Font(clockFont, Font.BOLD, 18));
 				g2d.setColor(new Color(180, 233, 0));
 			} else {
